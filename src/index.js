@@ -1,12 +1,52 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import {render} from 'react-dom'
+import {
+  BrowserRouter as Router,
+  Link,
+  Route,
+} from 'react-router-dom'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const Home = () => (
+  <div>
+    <h2>Home</h2>
+  </div>
+)
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const About = () => (
+  <div>
+    <h2>About</h2>
+  </div>
+)
+
+const OldSchoolMenuLink = ({children, to, exact}) => {
+  return (
+    <Route path={to} exact={exact} children={({match}) => (
+      <div className={match ? 'active' : ''}>
+        {match ? '>' : ''}
+        <Link to={to}>
+          {children}
+        </Link>
+      </div>
+    )}/>
+  )
+}
+
+const App = () => (
+  <Router>
+    <div>
+      <OldSchoolMenuLink exact={true} to='/'>
+        Home
+      </OldSchoolMenuLink>
+      <OldSchoolMenuLink to='/about'>
+        About
+      </OldSchoolMenuLink>
+
+      <hr />
+
+      <Route exact path='/' component={Home} />
+      <Route path='/about' component={About} />
+    </div>
+  </Router>
+)
+
+render(<App />, document.getElementById('root'))
